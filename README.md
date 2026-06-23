@@ -39,8 +39,4 @@ Melepas pointer `AGENTS.md`; knowledge pack kamu tetap aman di workspace.
 - **Onboarding proaktif:** hook `onboarding-gate` memicu wizard setup otomatis bila knowledge pack belum terisi — saat sesi baru maupun pesan pertama (CLI maupun channel WA/TG), sekali per sesi. Pemilik tak perlu tahu prompt khusus.
 - **Plug-and-play:** placeholder `{{...}}`, wizard onboarding, checklist kesiapan, 9 modul opsional.
 
-## Free vs paid
-- **Free:** repo publik ini.
-- **Premium (opsional):** add-on (contoh terisi per-industri, integrasi Sheets/CRM) via repo privat atau storefront.
-
 *By Rin.*
