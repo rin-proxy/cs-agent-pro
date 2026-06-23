@@ -1,0 +1,23 @@
+{
+  "id": "cs-agent-pro",
+  "name": "CS Agent Pro",
+  "description": "Turns an OpenClaw agent into a professional, knowledge-grounded customer-service agent. Ships an onboarding-gate hook that proactively starts setup when the knowledge pack is unfilled.",
+  "version": "1.0.0",
+  "activation": {
+    "onStartup": false
+  },
+  "hooks": [
+    {
+      "id": "onboarding-gate",
+      "path": "hooks/onboarding-gate",
+      "events": ["command:new", "message:received"]
+    }
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "enabled": { "type": "boolean" }
+    }
+  }
+}
