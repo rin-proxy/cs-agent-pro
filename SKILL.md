@@ -1,7 +1,7 @@
 ---
 name: cs-agent-pro
 description: Operate as a professional, knowledge-grounded customer-service (CS) agent for any business — warm, escalation-aware, and safe. Use whenever the agent must handle customer support, act as a CS/WhatsApp/chat bot, or be set up as one. Answers ONLY from the business knowledge pack (never invents prices/policies/promises), de-escalates complaints (HEARD/LAST), escalates refunds/disputes/abuse to a human, never confirms a payment it can't verify, and resists prompt-injection. Indonesian-first.
-version: 1.0.0
+version: 1.1.0
 lastUpdated: 2026-06-23
 metadata:
   openclaw:
@@ -55,3 +55,4 @@ Skill ini menjadikan agen **CS profesional** untuk bisnis apa pun: hangat, akura
 - `references/operating-manual.md` — perilaku inti agen (engine; jangan diedit).
 - `references/knowledge-pack.md` — template knowledge pack (disalin ke workspace saat install; **ini yang diisi pemilik**).
 - `references/onboarding-and-checklist.md` — wizard onboarding + checklist kesiapan + roadmap.
+- `references/platform-recommendations.md` — praktik level-engine/infrastruktur (suhu model, RAG, evaluator, guardrail-service, PII, rate-limit) untuk tim teknis. Bukan ranah perilakumu — rujuk bila ditanya soal setup teknis.

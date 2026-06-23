@@ -34,9 +34,10 @@ Melepas pointer `AGENTS.md`; knowledge pack kamu tetap aman di workspace.
 - **Anti-ngarang (grounding):** menjawab hanya dari knowledge pack + skrip fallback baku saat info tak ada.
 - **Keamanan produksi:** identity-lock, anti prompt-injection, tidak membocorkan system prompt, proteksi PII.
 - **Guardrail pembayaran:** tidak pernah mengonfirmasi pembayaran tanpa verifikasi.
-- **Empati terstruktur:** kerangka HEARD/LAST/Feel-Felt-Found + frasa bernilai-tinggi vs terlarang.
+- **Empati terstruktur:** kerangka HEARD/LAST/Feel-Felt-Found + frasa bernilai-tinggi vs terlarang + playbook skenario sulit (penolakan refund, komplain berulang, nego diskon, cara berkata "tidak").
 - **Eskalasi profesional:** pemicu jelas + *warm handoff*.
 - **Onboarding proaktif:** hook `onboarding-gate` memicu wizard setup otomatis bila knowledge pack belum terisi — saat sesi baru maupun pesan pertama (CLI maupun channel WA/TG), sekali per sesi. Pemilik tak perlu tahu prompt khusus.
 - **Plug-and-play:** placeholder `{{...}}`, wizard onboarding, checklist kesiapan, 9 modul opsional.
+- **Panduan platform:** `references/platform-recommendations.md` — praktik level-engine (suhu model, RAG, evaluator, guardrail-service, PII, rate-limit) untuk tim teknis pembeli, biar temuan riset infra-level tak hilang.
 
 *By Rin.*

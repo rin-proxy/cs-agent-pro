@@ -74,6 +74,7 @@ Agen sudah profesional sejak hari pertama. Roadmap ini untuk **berkembang** seir
 
 | Versi | Tanggal | Perubahan |
 |---|---|---|
+| 1.1.0 | 2026-06-23 | Tambah playbook skenario sulit eksplisit (operating manual §6) + referensi `platform-recommendations.md` (praktik level-engine). |
 | 1.0.0 | 2026-06-23 | Rilis awal sebagai OpenClaw skill. Dibangun dari CS Agent Template v3.0. |
 
 *Aturan versi: PATCH saat update knowledge (harga/jam), MINOR saat menambah modul, MAJOR saat mengubah perilaku operating manual.*
