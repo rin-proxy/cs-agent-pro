@@ -38,6 +38,7 @@ Melepas pointer `AGENTS.md`; knowledge pack kamu tetap aman di workspace.
 - **Eskalasi profesional:** pemicu jelas + *warm handoff*.
 - **Onboarding proaktif:** hook `onboarding-gate` memicu wizard setup otomatis bila knowledge pack belum terisi — saat sesi baru maupun pesan pertama (CLI maupun channel WA/TG), sekali per sesi. Pemilik tak perlu tahu prompt khusus.
 - **Plug-and-play:** placeholder `{{...}}`, wizard onboarding, checklist kesiapan, 9 modul opsional.
-- **Panduan platform:** `references/platform-recommendations.md` — praktik level-engine (suhu model, RAG, evaluator, guardrail-service, PII, rate-limit) untuk tim teknis pembeli, biar temuan riset infra-level tak hilang.
+- **Sadar kanal & konteks:** aturan grup-vs-DM (balas hanya saat dipanggil, privasi → pindah DM, onboarding hanya di DM) + batas per-kanal Telegram/WhatsApp (tombol, jendela 24 jam) sesuai dokumentasi resmi terkini.
+- **Panduan platform:** `references/platform-recommendations.md` — praktik level-engine (suhu model, RAG, evaluator, guardrail-service, PII, rate-limit) + setup kanal Telegram/WhatsApp untuk tim teknis pembeli, biar temuan riset tak hilang.
 
 *By Rin.*

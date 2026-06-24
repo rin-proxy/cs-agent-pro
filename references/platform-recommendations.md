@@ -53,6 +53,25 @@ menangani sisi prompt; bagian di bawah melengkapi di sisi infrastruktur. (Disara
 ## 9. Multi-bahasa
 - Deteksi bahasa di first-pass; balas dalam bahasa pelanggan (operating manual §2/§10 sudah instruksikan).
 
+## 10. Kanal: Telegram & WhatsApp (setup integrasi)
+*(Fakta per Juni 2026 — spesifik API berubah; verifikasi ke docs resmi saat deploy.)*
+
+**Ketergantungan inti:** agen hanya bisa berperilaku benar di grup/DM kalau **adapter channel mengirim konteks** — tipe chat (private/group), flag mention/reply, nama kanal, dan untuk WhatsApp status jendela 24 jam. Suntikkan ini ke tiap pesan; tanpa itu agen tak bisa andal tahu dia di grup atau di-mention.
+
+**Telegram** (core.telegram.org/bots):
+- **Privacy mode** (BotFather `/setprivacy`): default ON → di grup bot hanya menerima `/cmd@bot`, reply ke pesannya, mention, dan service message. Biarkan ON untuk CS rapi (bot tak "mendengar" semua). Berubah setelah bot di-remove + add ulang.
+- `chat.type` = `private` / `group` / `supergroup`. Deteksi mention via `entities` (`bot_command` / `mention`) atau `reply_to_message.from.id == bot`.
+- Inline keyboard ± maks 8 tombol/baris, 100 total; `callback_data` ≤ 64 byte. Pakai **HTML parse mode** (escaping MarkdownV2 rawan bikin pesan gagal total).
+
+**WhatsApp** (developers.facebook.com/docs/whatsapp, Cloud API):
+- **Jendela layanan 24 jam:** dalam 24 jam sejak pesan terakhir pelanggan → bebas kirim pesan sesi; di luar → wajib **template** yang sudah di-approve (kategori marketing / utility / authentication). Pesan user-initiated gratis; **opt-in wajib** untuk pesan proaktif.
+- **Interaktif (batas keras):** reply button **maks 3**; *list* **maks 10 baris** total (≤ 10 section). Judul tombol ≤ 20 char, judul baris list ≤ 24.
+- **Format:** `*tebal*` `_miring_` `~coret~` monospace — **bukan** markdown/HTML/heading.
+- **Grup:** Cloud API untuk CS pada dasarnya **1:1**. Ada Groups API (sejak Okt 2025, maks 8 peserta, gated via KAM/BSP) untuk sel kecil/VIP — **bukan** untuk CS umum. Perlakukan WhatsApp sebagai 1:1.
+- Identitas pelanggan = nomor `from`; field `context` menandai reply ke pesan tertentu.
+
+**Rendering tombol/list = tugas adapter**; agen hanya menyatakan maksud (operating manual §2b/§10).
+
 ## Checklist pra-rilis (sisi platform — pelengkap checklist di onboarding-and-checklist §B)
 - [ ] Faithfulness sampling: > 95% jawaban grounded
 - [ ] Escalation correctness: audit ~20 eskalasi/minggu

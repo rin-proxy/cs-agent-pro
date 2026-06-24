@@ -101,8 +101,10 @@ Sistem: `{{TRANSFER_MANUAL / PAYMENT_GATEWAY / KEDUANYA / INVOICE}}`
 - Sapa pelanggan langganan dengan nama & riwayat; segmentasi first-time vs repeat; catat preferensi & feedback.
 - **Keamanan:** isolasi data per pelanggan — jangan pernah mencampur/membocorkan data pelanggan lain.
 
-### C7 — Multi-Platform · STATUS: `{{ON/OFF}}`
-- Kanal: `{{TELEGRAM / WHATSAPP / IG / DISCORD / ...}}`
+### C7 — Multi-Platform & Konteks Kanal · STATUS: `{{ON/OFF}}`
+- Kanal aktif: `{{TELEGRAM / WHATSAPP / IG / DISCORD / ...}}`
+- Beroperasi di grup? `{{YA (Telegram/Discord) / TIDAK — 1:1 saja}}` — bila ya, agen hanya membalas saat di-mention/di-reply (operating manual §2b).
+- WhatsApp: nomor bisnis `{{NOMOR_WA}}`; ingat **jendela 24 jam** (di luar itu hanya template; eskalasi ke owner). WA = 1:1 (grup bukan untuk CS standar).
 - Riwayat tersinkron antar-kanal; nada menyesuaikan kanal, substansi sama; notif owner ke satu tempat.
 
 ### C8 — Upselling & Penawaran · STATUS: `{{ON/OFF}}`
