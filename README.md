@@ -14,7 +14,7 @@ bash ~/.openclaw/skills/cs-agent-pro/scripts/install.sh      # idempoten
 ## Pakai
 1. **Isi knowledge pack** di `memory/cs-agent-pro/knowledge-pack.md` — atau biarkan agen **otomatis menanyaimu**: hook `onboarding-gate` memulai wizard onboarding bila pack belum terisi, baik saat sesi baru (`command:new`) maupun pada pesan pertama (`message:received`, untuk channel WA/TG) — sekali per sesi.
 2. Agen otomatis memuat operating manual + knowledge pack, lalu melayani pelanggan sesuai aturan (grounding, eskalasi, keamanan).
-3. Sebelum go-live, lewati **Checklist Kesiapan** (`references/onboarding-and-checklist.md`), termasuk uji red-team.
+3. Sebelum go-live, jalankan **`bash scripts/check.sh`** (gate kesiapan otomatis — cek knowledge pack terisi + aturan governance), lalu lewati **Checklist Kesiapan** (`references/onboarding-and-checklist.md`), termasuk uji red-team.
 
 Kontrak + prosedur agen ada di `SKILL.md`. Perilaku inti di `references/operating-manual.md`.
 

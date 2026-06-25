@@ -1,5 +1,12 @@
 # Changelog — cs-agent-pro
 
+## 1.3.0 (2026-06-25)
+- **Selaras dengan standar skill-template (harness Tier-3):** SKILL.md kini punya peta **4 lever**
+  (Context · Tools · Loop · Governance) yang membingkai perilaku CS ke vokabular harness.
+- **`scripts/check.sh`** — gate kesiapan otomatis (lever Governance): cek knowledge pack terisi
+  (tanpa `{{`), aturan eskalasi/pembayaran/anti-injeksi di operating manual, dan deklarasi hook.
+  Mengotomatiskan inti **Checklist Kesiapan** — jalankan sebelum go-live. (Uji red-team tetap manual.)
+
 ## 1.2.0 (2026-06-24)
 - **Operating manual** — seksi baru **§2b "Konteks: grup vs DM & per-kanal"**: di grup balas hanya saat di-mention/di-reply, jangan bocorkan PII di grup (pindah DM), onboarding hanya di DM; penyesuaian format/tombol per-kanal.
 - **Fix §10** — batas tombol jadi per-kanal (Telegram ± ≤8/baris; WhatsApp maks 3 / list ≤10) menggantikan angka universal "4–5" yang salah untuk WhatsApp.
