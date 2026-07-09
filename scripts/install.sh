@@ -42,23 +42,32 @@ else
   ok "memory/$SLUG/knowledge-pack.md (seeded from template — fill this in)"
 fi
 
-# ── 2/3) enable the onboarding-gate hook (best-effort; tolerates older CLIs) ───
-# This is what makes the agent PROACTIVELY start onboarding on a new session when the
-# knowledge pack is still unfilled. The AGENTS.md pointer (step 3) is the always-on backstop.
+# ops config (escalation webhook + logging toggle, read by the cs-ops hook) + logs dir
+if [ -f "$KP_DIR/ops-config.json" ]; then
+  skip "memory/$SLUG/ops-config.json (kept — your config)"
+else
+  cp "$SKILL_DIR/references/ops-config.json" "$KP_DIR/ops-config.json"
+  ok "memory/$SLUG/ops-config.json (seeded — set escalationWebhook to push escalations)"
+fi
+mkdir -p "$KP_DIR/logs" && ok "memory/$SLUG/logs/ (conversation logs)"
+
+# ── 2/3) enable hooks: onboarding-gate (proactive setup) + cs-ops (logging/escalation) ──
+# onboarding-gate starts onboarding when the pack is unfilled; cs-ops logs conversations,
+# captures KB gaps, and delivers escalations. The AGENTS.md pointer (step 3) is the backstop.
+HOOKS="onboarding-gate cs-ops"
 if [ "$DO_HOOK" = 1 ]; then
-  hr "2/3 enable hook: onboarding-gate"
+  hr "2/3 enable hooks: $HOOKS"
   if command -v openclaw >/dev/null 2>&1; then
-    if openclaw hooks enable onboarding-gate >/dev/null 2>&1; then
-      ok "hook enabled via openclaw"
-      echo "       NOTE: restart the Gateway so the hook loads."
-    else
-      skip "could not auto-enable (run: openclaw hooks enable onboarding-gate, then restart gateway)"
-    fi
+    for h in $HOOKS; do
+      if openclaw hooks enable "$h" >/dev/null 2>&1; then ok "hook enabled: $h"
+      else skip "could not auto-enable $h (run: openclaw hooks enable $h)"; fi
+    done
+    echo "       NOTE: restart the Gateway so the hooks load."
   else
-    skip "openclaw not on PATH — enable manually: openclaw hooks enable onboarding-gate"
+    skip "openclaw not on PATH — enable manually: openclaw hooks enable onboarding-gate cs-ops"
   fi
 else
-  skip "2/3 hook (--no-hook)"
+  skip "2/3 hooks (--no-hook)"
 fi
 
 # ── 3/3) wire a usage pointer into AGENTS.md (idempotent, marker-fenced, backed up)
@@ -92,5 +101,7 @@ else
 fi
 
 echo; hr "done"
-echo "Next: isi  $KP_DIR/knowledge-pack.md  (atau buka sesi baru — agen akan tanya otomatis)."
-echo "Undo: bash $SKILL_DIR/scripts/uninstall.sh --workspace $WS"
+echo "Next:   isi  $KP_DIR/knowledge-pack.md  (atau buka sesi baru — agen akan tanya otomatis)."
+echo "Cek:    bash $SKILL_DIR/scripts/check.sh  --workspace $WS   (gate kesiapan sebelum go-live)"
+echo "Report: bash $SKILL_DIR/scripts/report.sh --workspace $WS   (eskalasi + KB-gap, setelah ada trafik)"
+echo "Undo:   bash $SKILL_DIR/scripts/uninstall.sh --workspace $WS"

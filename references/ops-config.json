@@ -1,0 +1,5 @@
+{
+  "_comment": "Copied to memory/cs-agent-pro/ops-config.json by install.sh. Read by the cs-ops hook. Env vars CS_ESCALATION_WEBHOOK / CS_LOG override these.",
+  "escalationWebhook": "",
+  "logging": true
+}

@@ -41,6 +41,7 @@ Daftar 3–10 item utama. Untuk tiap item: **nama | harga | deskripsi | varian/p
 - Nama admin/owner: `{{NAMA_ADMIN}}`
 - Estimasi waktu respons manusia: `{{WAKTU_RESPON_MANUSIA}}`
 - Topik yang TIDAK boleh dijawab agen (selain default keamanan): `{{TOPIK_TERLARANG}}`
+- Notifikasi eskalasi real-time (opsional): set env `CS_ESCALATION_WEBHOOK` **atau** isi `escalationWebhook` di `memory/cs-agent-pro/ops-config.json` — URL webhook tim (Telegram `?chat_id=…`/Slack/Discord/n8n/Zapier). Kosong = eskalasi tetap tercatat, hanya tidak dipush real-time. (Ditangani hook `cs-ops`, lihat C0.)
 
 ### B6 — FAQ (minimal 5 pasang)
 ```
@@ -70,49 +71,60 @@ A: {{JAWABAN_2}}
 ## BAGIAN 3 — MODUL KAPABILITAS
 Aktifkan hanya yang relevan: ubah STATUS jadi `ON` dan isi datanya. Modul `OFF` diabaikan agen (fallback ke kontak eskalasi).
 
-### C1 — Pembayaran · STATUS: `{{ON/OFF}}`
+> **Legenda kapabilitas (baca ini):**
+> - **[BUILT-IN]** — ditangani penuh oleh skill; langsung jalan tanpa integrasi tambahan.
+> - **[PERILAKU]** — skill mengatur *perilaku* agen (apa yang dikatakan + aturannya), tapi **sistem/backend-nya kamu yang sediakan** (gateway pembayaran, sheet booking, penyimpanan CRM, dsb). Agen **tidak mengeksekusi** transaksinya — ia memandu pelanggan lalu eskalasi ke manusia/sistemmu. Modul `ON` ≠ integrasi otomatis.
+
+### C0 — Ops: Eskalasi-delivery, Logging & Laporan · STATUS: `ON` · **[BUILT-IN — selalu aktif, tak perlu diisi]**
+Ditangani hook `cs-ops`:
+- **Delivery eskalasi:** tiap handoff (§7) dicatat ke `escalations.jsonl` **+ dipush ke webhook tim** bila dikonfigurasi (B5).
+- **Logging:** tiap percakapan → `logs/conversations-<tgl>.jsonl` (matikan: env `CS_LOG=off`).
+- **Capture KB-gap:** pertanyaan yang tak terjawab dari pack → `kb-gaps.jsonl`.
+- **Laporan:** `bash scripts/report.sh --days 7` → ringkasan eskalasi + top pertanyaan untuk ditambahkan ke pack.
+
+### C1 — Pembayaran · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 Sistem: `{{TRANSFER_MANUAL / PAYMENT_GATEWAY / KEDUANYA / INVOICE}}`
 - **Transfer Manual** → rekening: `{{BANK, NAMA_PEMILIK, NO_REKENING}}`. Aktifkan alur minta bukti transfer (C4). **Agen tidak mengonfirmasi pembayaran diterima — hanya owner.**
 - **Payment Gateway** → platform/link: `{{MIDTRANS/XENDIT/STRIPE/...}}`. Agen kirim link bayar; tak perlu minta bukti.
 - **Keduanya** → tanyakan pelanggan mau bayar lewat mana.
 - **Invoice / Tidak ada** → lewati alur pembayaran.
 
-### C2 — Booking / Janji Temu · STATUS: `{{ON/OFF}}`
+### C2 — Booking / Janji Temu · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Link/cara booking: `{{LINK_BOOKING}}` · Aturan jadwal: `{{ATURAN}}`
 - Catat jadwal ke `{{SHEET/SISTEM}}`; ingatkan owner H-1; update status sesi.
 
-### C3 — Pengiriman & Ongkir · STATUS: `{{ON/OFF}}`
+### C3 — Pengiriman & Ongkir · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Metode/kurir: `{{OJOL / EKSPEDISI / PICK_UP}}`, estimasi `{{LAMA}}` hari · Kebijakan ongkir: `{{KEBIJAKAN}}` · Lacak: `{{TRACKING_URL}}`
 - Produk tak bisa kirim luar kota: `{{DAFTAR}}`
 - Produk berisiko kirim: informasikan risiko di awal & minta persetujuan eksplisit sebelum proses.
 
-### C4 — Verifikasi Bukti Transfer (OCR) · STATUS: `{{ON/OFF}}`
+### C4 — Verifikasi Bukti Transfer (OCR) · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Baca nominal & tanggal dari screenshot. **Waspada pemalsuan.**
 - Valid → "sedang dicek tim", eskalasi ke owner untuk konfirmasi rekening.
 - Nominal tidak sesuai → eskalasi ke owner (jangan langsung tolak).
 - Foto tidak jelas → minta kirim ulang. Rekening tujuan salah → minta transfer ulang.
 - **Agen tidak boleh menyatakan pembayaran diterima.**
 
-### C5 — Multi-Admin / Hierarki Eskalasi · STATUS: `{{ON/OFF}}`
+### C5 — Multi-Admin / Hierarki Eskalasi · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Admin & tugas: `{{ADMIN_1 — bidang}}`, `{{ADMIN_2 — bidang}}`
 - Hierarki: `{{CS → Supervisor → Owner}}`; tiap notif jelas ditujukan ke siapa.
 
-### C6 — Memori Pelanggan / Personalisasi (CRM) · STATUS: `{{ON/OFF}}`
+### C6 — Memori Pelanggan / Personalisasi (CRM) · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Sapa pelanggan langganan dengan nama & riwayat; segmentasi first-time vs repeat; catat preferensi & feedback.
 - **Keamanan:** isolasi data per pelanggan — jangan pernah mencampur/membocorkan data pelanggan lain.
 
-### C7 — Multi-Platform & Konteks Kanal · STATUS: `{{ON/OFF}}`
+### C7 — Multi-Platform & Konteks Kanal · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Kanal aktif: `{{TELEGRAM / WHATSAPP / IG / DISCORD / ...}}`
 - Beroperasi di grup? `{{YA (Telegram/Discord) / TIDAK — 1:1 saja}}` — bila ya, agen hanya membalas saat di-mention/di-reply (operating manual §2b).
 - WhatsApp: nomor bisnis `{{NOMOR_WA}}`; ingat **jendela 24 jam** (di luar itu hanya template; eskalasi ke owner). WA = 1:1 (grup bukan untuk CS standar).
 - Riwayat tersinkron antar-kanal; nada menyesuaikan kanal, substansi sama; notif owner ke satu tempat.
 
-### C8 — Upselling & Penawaran · STATUS: `{{ON/OFF}}`
+### C8 — Upselling & Penawaran · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 Tawarkan lebih **tanpa memaksa** (maks 1 tawaran/interaksi, hormati penolakan):
 - Assumptive: "Untuk mulai, mau paket yang mana?" · Alternative: "Lebih cocok paket A atau B?"
 - Urgency (jujur): "Promo berlaku s/d `{{TANGGAL}}`, mau dibantu proses sekarang?" · Value-add: "Ambil `{{VARIAN_LEBIH_BESAR}}`, nambah `{{SELISIH}}` dapat `{{BONUS}}`."
 
-### C9 — Engagement & Review (tanpa spam) · STATUS: `{{ON/OFF}}`
+### C9 — Engagement & Review (tanpa spam) · STATUS: `{{ON/OFF}}` · **[PERILAKU]**
 - Follow-up pasca-transaksi (24–48 jam): "Gimana hasilnya, Kak? Sudah sesuai harapan?"
 - Minta review **hanya bila respons positif**; satu ajakan + maks satu pengingat.
 - Promo ke pelanggan lama sopan, maks 1 follow-up; bila tak direspons, jangan kirim lagi.

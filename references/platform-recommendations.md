@@ -5,6 +5,10 @@ di **level platform/gateway** — tombol yang *tidak bisa* diatur dari prompt. D
 **tim teknis/operator** yang menjalankan agen, agar kualitas & keamanan optimal. Skill ini sudah
 menangani sisi prompt; bagian di bawah melengkapi di sisi infrastruktur. (Disarankan, bukan wajib.)
 
+> **Sudah BUILT-IN sejak v1.4.0 (tak perlu kamu bangun):** logging percakapan, capture KB-gap, dan **delivery eskalasi** (`escalations.jsonl` + webhook) lewat hook `cs-ops`; laporan lewat `scripts/report.sh`. Bagian di bawah tetap relevan untuk *melampaui* baseline (RAG, evaluator, supervisor, guardrail-service).
+>
+> **Caveat event hook (verifikasi saat deploy):** per docs OpenClaw, event yang *replyable* (bisa mendorong teks balik ke chat) hanya `command:new`/`command:reset` + `session:compact:*`. Maka nudge onboarding pada `message:received` **mungkin tak terkirim** di sebagian gateway channel — namun backstop `AGENTS.md` (selalu onboard-first) menutupinya & `command:new` mencakup CLI/desktop. Hook `cs-ops` **write-only** (nulis file / POST webhook), jadi batasan replyable **tidak** memengaruhinya.
+
 ## 1. Setelan model
 - **Temperature 0.1–0.2** untuk respons CS. Di atas ~0.4, model makin sering berinterpolasi di luar
   knowledge (mengarang). Rendah = lebih patuh ke knowledge pack.

@@ -11,11 +11,14 @@ while [ $# -gt 0 ]; do case "$1" in
   -h|--help) grep -E '^#( |$)' "$0" | sed 's/^# \{0,1\}//'; exit 0;;
   *) echo "unknown arg: $1" >&2; exit 2;; esac; done
 
-# ── disable the onboarding-gate hook ──────────────────────────────────────────
-if command -v openclaw >/dev/null 2>&1 && openclaw hooks disable onboarding-gate >/dev/null 2>&1; then
-  echo "  [ok]   hook disabled (restart gateway to fully unload)"
+# ── disable the hooks (onboarding-gate + cs-ops) ──────────────────────────────
+if command -v openclaw >/dev/null 2>&1; then
+  for h in onboarding-gate cs-ops; do
+    if openclaw hooks disable "$h" >/dev/null 2>&1; then echo "  [ok]   hook disabled: $h (restart gateway to fully unload)"
+    else echo "  [skip] $h not disabled (already off)"; fi
+  done
 else
-  echo "  [skip] hook not disabled (openclaw not on PATH / already off)"
+  echo "  [skip] hooks not disabled (openclaw not on PATH)"
 fi
 
 # ── strip the AGENTS.md managed block ─────────────────────────────────────────

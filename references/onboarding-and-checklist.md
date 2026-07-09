@@ -74,6 +74,7 @@ Agen sudah profesional sejak hari pertama. Roadmap ini untuk **berkembang** seir
 
 | Versi | Tanggal | Perubahan |
 |---|---|---|
+| 1.4.0 | 2026-07-09 | Lapisan ops **[BUILT-IN]** (hook `cs-ops`): logging + capture KB-gap + delivery eskalasi ke webhook · `scripts/report.sh` · `check.sh` kini validasi isi KB nyata · legenda modul BUILT-IN/PERILAKU + modul C0 · §7 delivery eskalasi jujur. |
 | 1.3.0 | 2026-06-25 | Selaras ke standar skill-template (harness Tier-3): peta 4-lever di SKILL.md + `scripts/check.sh` (gate kesiapan otomatis). |
 | 1.2.0 | 2026-06-24 | Seksi grup-vs-DM & per-kanal (operating manual §2b) + fix batas tombol per-kanal + setup kanal Telegram/WhatsApp di `platform-recommendations.md` + C7 diperluas. |
 | 1.1.0 | 2026-06-23 | Tambah playbook skenario sulit eksplisit (operating manual §6) + referensi `platform-recommendations.md` (praktik level-engine). |
