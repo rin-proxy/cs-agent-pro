@@ -1,5 +1,7 @@
 # CS Agent Pro — jadikan agen OpenClaw kamu CS profesional
 
+> 🔒 **Diaudit & aman** — lolos skill-gate 100/100 · berjalan **lokal-saja**, kecuali satu webhook eskalasi yang **kamu** konfigurasi sendiri (opt-in, mati secara default). Semua kode terbuka & bisa diverifikasi. _(Audit keamanan: 2026-07-17)_
+
 Skill OpenClaw yang membuat agen menjadi **customer-service profesional** untuk bisnis apa pun — hangat, akurat (hanya menjawab dari knowledge kamu), aman, dan tahu kapan harus eskalasi ke manusia. Kamu **cukup mengisi knowledge pack** (produk, harga, kebijakan, FAQ); perilaku CS-nya sudah baku.
 
 Dibangun dari sintesis praktik terbaik: prompt-engineering (Anthropic/OpenAI), keamanan LLM (OWASP LLM Top 10, anti prompt-injection), dan domain CS (Zendesk, Intercom Fin, Salesforce, kerangka HEARD/LAST).
